@@ -8,15 +8,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final int HISTORY_LIMIT = 10;
+
+    private static final int HISTORY_LIMIT = 10; // Лимит истории
     private final LinkedList<Task> history = new LinkedList<>();
 
     @Override
     public void add(Task task) {
-        if (history.size() == HISTORY_LIMIT) {
+        if (task == null) {
+            return; // Игнорируем null-задачи
+        }
+
+        // Удаляем задачу из истории, если она уже существует
+        history.removeIf(existingTask -> existingTask.getId() == task.getId());
+
+        // Добавляем задачу в конец истории
+        history.add(task);
+
+        // Ограничиваем размер истории
+        if (history.size() > HISTORY_LIMIT) {
             history.removeFirst();
         }
-        history.add(task);
     }
 
     @Override
