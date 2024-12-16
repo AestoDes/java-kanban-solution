@@ -9,5 +9,5 @@ public interface HistoryManager {
 
     List<Task> getHistory();
 
-    void remove(int id); // Новый метод для удаления задачи по ID
+    void remove(int id);
 }

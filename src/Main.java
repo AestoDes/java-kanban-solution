@@ -9,17 +9,17 @@ public class Main {
     public static void main(String[] args) {
         TaskManager manager = new InMemoryTaskManager();
 
-        Task task1 = new Task("Task 1", "Description 1", manager.generateId(), TaskStatus.NEW);
-        manager.createTask(task1);
+        Task task = new Task("Task 1", "Description 1", manager.generateId(), TaskStatus.NEW);
+        manager.createTask(task);
 
-        Epic epic1 = new Epic("Epic 1", "Epic Description", manager.generateId(), TaskStatus.NEW);
-        manager.createEpic(epic1);
+        Epic epic = new Epic("Epic 1", "Epic Description", manager.generateId(), TaskStatus.NEW);
+        manager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask("Subtask 1", "Description 1", manager.generateId(), TaskStatus.NEW, epic1.getId());
-        manager.createSubtask(subtask1);
+        Subtask subtask = new Subtask("Subtask 1", "Description 1", manager.generateId(), TaskStatus.NEW, epic.getId());
+        manager.createSubtask(subtask);
 
         System.out.println("Tasks: " + manager.getAllTasks());
         System.out.println("Epics: " + manager.getAllEpics());
-        System.out.println("Subtasks of Epic: " + manager.getSubtasksOfEpic(epic1.getId()));
+        System.out.println("Subtasks: " + manager.getAllSubtasks());
     }
 }
