@@ -15,21 +15,27 @@ public interface TaskManager {
 
     void createSubtask(Subtask subtask);
 
-    List<Task> getAllTasks();
-
-    List<Epic> getAllEpics();
-
-    List<Subtask> getSubtasksOfEpic(int epicId); // Добавлено
-
     Task getTask(int id);
 
-    void updateTask(Task task);
+    Epic getEpic(int id);
 
-    void updateSubtask(Subtask subtask);
+    Subtask getSubtask(int id);
+
+    void updateTask(Task task);
 
     void deleteTaskById(int id);
 
     void deleteEpicById(int id);
+
+    void deleteSubtaskById(int id);
+
+    List<Task> getAllTasks();
+
+    List<Epic> getAllEpics();
+
+    List<Subtask> getAllSubtasks();
+
+    List<Subtask> getSubtasksOfEpic(int epicId);
 
     List<Task> getHistory();
 }

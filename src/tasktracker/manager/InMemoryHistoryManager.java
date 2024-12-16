@@ -2,29 +2,23 @@ package tasktracker.manager;
 
 import tasktracker.model.Task;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static final int HISTORY_LIMIT = 10; // Лимит истории
+    private static final int HISTORY_LIMIT = 10;
+
     private final LinkedList<Task> history = new LinkedList<>();
 
     @Override
     public void add(Task task) {
         if (task == null) {
-            return; // Игнорируем null-задачи
+            return;
         }
-
-        // Удаляем задачу из истории, если она уже существует
         history.removeIf(existingTask -> existingTask.getId() == task.getId());
-
-        // Добавляем задачу в конец истории
         history.add(task);
-
-        // Ограничиваем размер истории
         if (history.size() > HISTORY_LIMIT) {
             history.removeFirst();
         }
@@ -32,7 +26,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        return Collections.unmodifiableList(new ArrayList<>(history));
+        return Collections.unmodifiableList(history);
     }
 
     @Override
