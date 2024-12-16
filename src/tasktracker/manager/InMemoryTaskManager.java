@@ -4,16 +4,15 @@ import tasktracker.model.Epic;
 import tasktracker.model.Subtask;
 import tasktracker.model.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
+
     private int idCounter = 1;
 
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
 
     @Override
     public int generateId() {
@@ -32,7 +31,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createSubtask(Subtask subtask) {
-        tasks.put(subtask.getId(), subtask);
+        subtasks.put(subtask.getId(), subtask);
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        tasks.put(task.getId(), task);
+    }
+
+    @Override
+    public void updateSubtask(Subtask subtask) {
+        subtasks.put(subtask.getId(), subtask);
     }
 
     @Override
@@ -43,5 +52,37 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Epic> getAllEpics() {
         return new ArrayList<>(epics.values());
+    }
+
+    @Override
+    public List<Subtask> getSubtasksOfEpic(int epicId) {
+        List<Subtask> result = new ArrayList<>();
+        for (Subtask subtask : subtasks.values()) {
+            if (subtask.getEpicId() == epicId) {
+                result.add(subtask);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteTaskById(int id) {
+        tasks.remove(id);
+    }
+
+    @Override
+    public void deleteEpicById(int id) {
+        epics.remove(id);
+    }
+
+    @Override
+    public Task getTask(int id) {
+        return tasks.get(id);
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        // Пустая заглушка, замените на правильную реализацию, если есть HistoryManager
+        return new ArrayList<>();
     }
 }
