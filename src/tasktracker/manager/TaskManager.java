@@ -10,9 +10,12 @@ public interface TaskManager {
     int generateId();
 
     void createTask(Task task);
+
     void createEpic(Epic epic);
+
     void createSubtask(Subtask subtask);
 
     List<Task> getAllTasks();
+
     List<Epic> getAllEpics();
 }
