@@ -1,25 +1,45 @@
-import tasktracker.manager.InMemoryTaskManager;
-import tasktracker.manager.TaskManager;
+import tasktracker.manager.FileBackedTaskManager;
 import tasktracker.model.Epic;
 import tasktracker.model.Subtask;
 import tasktracker.model.Task;
 import tasktracker.model.TaskStatus;
 
+import java.io.File;
+
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = new InMemoryTaskManager();
+        File file = new File("tasks.csv");
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
 
-        Task task = new Task("Task 1", "Description 1", manager.generateId(), TaskStatus.NEW);
-        manager.createTask(task);
+        // Создаём задачи
+        Task task1 = new Task("Task 1", "Description 1", manager.generateId(), TaskStatus.NEW);
+        manager.createTask(task1);
 
-        Epic epic = new Epic("Epic 1", "Epic Description", manager.generateId(), TaskStatus.NEW);
-        manager.createEpic(epic);
+        Task task2 = new Task("Task 2", "Description 2", manager.generateId(), TaskStatus.NEW);
+        manager.createTask(task2);
 
-        Subtask subtask = new Subtask("Subtask 1", "Description 1", manager.generateId(), TaskStatus.NEW, epic.getId());
-        manager.createSubtask(subtask);
+        // Создаём эпик
+        Epic epic1 = new Epic("Epic 1", "Epic Description", manager.generateId(), TaskStatus.NEW);
+        manager.createEpic(epic1);
 
-        System.out.println("Tasks: " + manager.getAllTasks());
-        System.out.println("Epics: " + manager.getAllEpics());
-        System.out.println("Subtasks: " + manager.getAllSubtasks());
+        // Добавляем подзадачи к эпику
+        Subtask subtask1 = new Subtask("Subtask 1", "Subtask Description", manager.generateId(), TaskStatus.NEW, epic1.getId());
+        manager.createSubtask(subtask1);
+
+        Subtask subtask2 = new Subtask("Subtask 2", "Subtask Description", manager.generateId(), TaskStatus.IN_PROGRESS, epic1.getId());
+        manager.createSubtask(subtask2);
+
+        // Выводим задачи перед сохранением
+        System.out.println("Tasks before loading: " + manager.getAllTasks());
+        System.out.println("Epics before loading: " + manager.getAllEpics());
+        System.out.println("Subtasks before loading: " + manager.getAllSubtasks());
+
+        // Загружаем задачи из файла
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
+
+        // Выводим загруженные данные
+        System.out.println("Tasks after loading: " + loadedManager.getAllTasks());
+        System.out.println("Epics after loading: " + loadedManager.getAllEpics());
+        System.out.println("Subtasks after loading: " + loadedManager.getAllSubtasks());
     }
 }
